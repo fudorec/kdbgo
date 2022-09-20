@@ -8,6 +8,8 @@ import (
 	"reflect"
 	"time"
 	"unicode"
+
+	"github.com/google/uuid"
 )
 
 // ReqType represents type of message sent or recieved via ipc
@@ -165,6 +167,14 @@ func FloatV(x []float64) *K {
 	return &K{KF, NONE, x}
 }
 
+func Timespan(x time.Duration) *K {
+	return &K{Type: -KN, Attr: NONE, Data: x}
+}
+
+func TimespanV(x []time.Duration) *K {
+	return &K{Type: KN, Attr: NONE, Data: x}
+}
+
 // Error constructs K error object from Go error
 func Error(x error) *K {
 	return &K{KERR, NONE, x}
@@ -193,6 +203,16 @@ func DateV(x []time.Time) *K {
 // Atom constructs generic K atom with given type
 func Atom(t int8, x interface{}) *K {
 	return &K{t, NONE, x}
+}
+
+// Guid wraps uuid.UUID (https://godoc.org/github.com/google/uuid) as K
+func Guid(x uuid.UUID) *K {
+	return &K{-UU, NONE, x}
+}
+
+// Guid wraps uuid.UUID slice (https://godoc.org/github.com/google/uuid) as K
+func GuidV(x []uuid.UUID) *K {
+	return &K{UU, NONE, x}
 }
 
 // NewList constructs generic list(type 0) from list of K arguments
@@ -443,7 +463,7 @@ func UnmarshalDict(t Dict, v interface{}) error {
 	return nil
 }
 
-// UnmarshalDictToMap decodes dict into map[string]{}interface
+// UnmarshalDictToMap decodes dict into map[string]interface{}
 func UnmarshalDictToMap(t Dict, v interface{}) error {
 	vv := reflect.ValueOf(v)
 	if vv.Kind() == reflect.Map {

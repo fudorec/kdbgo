@@ -12,7 +12,7 @@ matrix:
 
 before_install:
   # deps
-  - go get github.com/nu7hatch/gouuid
+  - go get github.com/google/uuid
   # linting tools
   - go get github.com/golang/lint/golint
   # code coverage

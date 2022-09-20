@@ -158,7 +158,7 @@ func DialTLS(host string, port int, auth string, cfg *tls.Config) (*KDBConn, err
 	if err != nil {
 		return nil, err
 	}
-	kdbconn := KDBConn{c, bufio.NewReader(c), "", string(port), auth}
+	kdbconn := KDBConn{c, bufio.NewReader(c), "", fmt.Sprint(port), auth}
 	return &kdbconn, nil
 }
 
@@ -188,7 +188,7 @@ func DialUnix(host string, port int, auth string) (*KDBConn, error) {
 	return &KDBConn{
 		con:     c,
 		rbuf:    bufio.NewReader(c),
-		Port:    string(port),
+		Port:    fmt.Sprint(port),
 		userpwd: auth,
 	}, nil
 }
