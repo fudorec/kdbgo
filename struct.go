@@ -167,6 +167,8 @@ func ShortV(x []int16) *K {
 	return &K{Type: KH, Attr: NONE, Data: x}
 }
 
+var K0Nh = Short(Nh)
+
 // Int wraps int32 as K
 func Int(x int32) *K {
 	return &K{-KI, NONE, x}
@@ -176,6 +178,8 @@ func Int(x int32) *K {
 func IntV(x []int32) *K {
 	return &K{KI, NONE, x}
 }
+
+var K0Ni = Int(Ni)
 
 // Long wraps int64 as K
 func Long(x int64) *K {
@@ -187,6 +191,8 @@ func LongV(x []int64) *K {
 	return &K{KJ, NONE, x}
 }
 
+var K0Nj = Long(Nj)
+
 // Real wraps float32 as K
 func Real(x float32) *K {
 	return &K{-KE, NONE, x}
@@ -197,6 +203,8 @@ func RealV(x []float32) *K {
 	return &K{KE, NONE, x}
 }
 
+var K0Ne = Real(Ne)
+
 // Float wraps float64 as K
 func Float(x float64) *K {
 	return &K{-KF, NONE, x}
@@ -206,6 +214,8 @@ func Float(x float64) *K {
 func FloatV(x []float64) *K {
 	return &K{KF, NONE, x}
 }
+
+var K0Nf = Float(Nf)
 
 func String(x string) *K {
 	return &K{Type: KC, Attr: NONE, Data: x}
@@ -221,6 +231,9 @@ func SymbolV(x []string) *K {
 	return &K{KS, NONE, x}
 }
 
+// TODO:
+// var K0Ns = Symbol("")
+
 func Timestamp(x time.Time) *K {
 	return &K{Type: -KP, Attr: NONE, Data: x.UTC()}
 }
@@ -231,6 +244,8 @@ func TimestampV(x []time.Time) *K {
 	}
 	return &K{Type: KP, Attr: NONE, Data: x}
 }
+
+var K0Np = Timestamp(time.Unix(0, Nj))
 
 func Date(x time.Time) *K {
 	return &K{Type: -KD, Attr: NONE, Data: x.UTC()}
@@ -243,6 +258,8 @@ func DateV(x []time.Time) *K {
 	return &K{Type: KD, Attr: NONE, Data: x}
 }
 
+var K0Nd = Timestamp(time.Unix(0, Nj))
+
 func Time(x time.Time) *K {
 	return &K{Type: -KT, Attr: NONE, Data: x.UTC()}
 }
@@ -254,6 +271,8 @@ func TimeV(x []time.Time) *K {
 	return &K{Type: KT, Attr: NONE, Data: x}
 }
 
+var K0Nt = Time(time.Unix(0, Nj))
+
 func Timespan(x time.Duration) *K {
 	return &K{Type: -KN, Attr: NONE, Data: x}
 }
@@ -261,6 +280,8 @@ func Timespan(x time.Duration) *K {
 func TimespanV(x []time.Duration) *K {
 	return &K{Type: KN, Attr: NONE, Data: x}
 }
+
+var K0Nn = &K{Type: -KN, Attr: NONE, Data: Nj}
 
 // Atom constructs generic K atom with given type
 func Atom(t int8, x interface{}) *K {
@@ -336,7 +357,7 @@ func (k *K) Index(i int) interface{} {
 	return &K{XD, NONE, t.Index(i)}
 }
 
-//https://github.com/CharlesSkelton/studio/blob/master/src/studio/kdb/K.java
+// https://github.com/CharlesSkelton/studio/blob/master/src/studio/kdb/K.java
 var attrPrint = []string{NONE: "", SORTED: "`s#", UNIQUE: "`u#", PARTED: "`p#", GROUPED: "`g#"}
 var unaryops = []string{"::", "+:", "-:", "*:", "%:", "&:", "|:", "^:", "=:", "<:", ">:", "$:", ",:", "#:", "_:", "~:", "!:", "?:", "@:", ".:", "0::", "1::", "2::", "avg", "last", "sum", "prd", "min", "max", "exit", "getenv", "abs", "sqrt", "log", "exp", "sin", "asin", "cos", "acos", "tan", "atan", "enlist", 255: ""}
 var binaryops = []string{":", "+", "-", "*", "%", "&", "|", "^", "=", "<", ">", "$", ",", "#", "_", "~", "!", "?", "@", ".", "0:", "1:", "2:", "in", "within", "like", "bin", "ss", "insert", "wsum", "wavg", "div", "xexp", "setenv"}
@@ -392,7 +413,7 @@ func (k K) String() string {
 }
 
 // ErrBadHeader to indicate invalid header
-var ErrBadHeader = errors.New("Bad header")
+var ErrBadHeader = errors.New("bad header")
 
 // ErrSyncRequest cannot process sync requests
 var ErrSyncRequest = errors.New("nosyncrequest")
@@ -521,7 +542,7 @@ func UnmarshalDict(t Dict, v interface{}) error {
 	var vals = t.Value.Data.([]*K)
 	vv := reflect.ValueOf(v)
 	if vv.Kind() != reflect.Ptr || vv.IsNil() {
-		return errors.New("Invalid target type. Should be non null pointer")
+		return errors.New("invalid target type. Should be non null pointer")
 	}
 	vv = reflect.Indirect(vv)
 	for i := range keys {
@@ -574,7 +595,7 @@ func UnmarshalDictToMap(t Dict, v interface{}) error {
 func UnmarshalTable(t Table, v interface{}) (interface{}, error) {
 	vv := reflect.ValueOf(v)
 	if vv.Kind() != reflect.Ptr || vv.IsNil() {
-		return nil, errors.New("Invalid target type. Shoult be non null pointer")
+		return nil, errors.New("invalid target type. shoult be non null pointer")
 	}
 	vv = reflect.Indirect(vv)
 	for i := 0; i < t.Data[0].Len(); i++ {

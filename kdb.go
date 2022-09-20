@@ -31,7 +31,7 @@ func (c *KDBConn) Close() error {
 	if c.ok() {
 		return c.con.Close()
 	}
-	return errors.New("Closed connection")
+	return errors.New("closed connection")
 }
 
 func (c *KDBConn) ok() bool {
@@ -70,7 +70,7 @@ func HandleClientConnection(conn net.Conn) {
 // Call performs synchronous call to kdb+ similar to h(func;arg1;arg2;...)
 func (c *KDBConn) Call(cmd string, args ...*K) (data *K, err error) {
 	if !c.ok() {
-		return nil, errors.New("Closed connection")
+		return nil, errors.New("closed connection")
 	}
 	var sending *K
 	var cmdK = &K{KC, NONE, cmd}
@@ -90,7 +90,7 @@ func (c *KDBConn) Call(cmd string, args ...*K) (data *K, err error) {
 // AsyncCall performs asynchronous call to kdb+
 func (c *KDBConn) AsyncCall(cmd string, args ...*K) (err error) {
 	if !c.ok() {
-		return errors.New("Closed connection")
+		return errors.New("closed connection")
 	}
 	var sending *K
 	var cmdK = &K{KC, NONE, cmd}
