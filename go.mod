@@ -1,4 +1,4 @@
-module github.com/sv/kdbgo
+module github.com/fudorec/kdbgo
 
 go 1.19
 

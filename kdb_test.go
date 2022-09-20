@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+
 	//"io/ioutil"
 	"os/exec"
 	"testing"
@@ -24,7 +25,7 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		log.Fatal("installing q is in your future")
 	}
-	cmd := exec.Command("q", "-p", "0W", "-q")
+	cmd := exec.Command("q", "-p", "0W")
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
 		log.Fatal("Failed to connect stdin", err)

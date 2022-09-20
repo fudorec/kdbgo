@@ -28,7 +28,7 @@ func Compress(b []byte) (dst []byte) {
 	binary.LittleEndian.PutUint32(lenbuf, uint32(len(b)))
 	copy(dst[8:], lenbuf)
 	for ; s < t; i *= 2 {
-		if 0 == i {
+		if i == 0 {
 			if d > e-17 {
 				return b
 			}
@@ -43,7 +43,7 @@ func Compress(b []byte) (dst []byte) {
 		if !g {
 			h = b[s] ^ b[s+1]
 			p = a[h]
-			g = (0 == p) || (0 != (b[s] ^ b[p]))
+			g = (p == 0) || ((b[s] ^ b[p]) != 0)
 		}
 
 		if 0 < s0 {
