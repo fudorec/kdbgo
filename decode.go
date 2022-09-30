@@ -136,7 +136,7 @@ func readData(r *bufio.Reader, order binary.ByteOrder) (*K, error) {
 		binary.Read(r, order, &sh)
 		return &K{msgtype, NONE, sh}, nil
 
-	case -KI, -KU, -KV:
+	case -KI, -KU, -KV, -KT:
 		var i int32
 		binary.Read(r, order, &i)
 		return &K{msgtype, NONE, i}, nil
@@ -176,10 +176,10 @@ func readData(r *bufio.Reader, order binary.ByteOrder) (*K, error) {
 		var span time.Duration
 		binary.Read(r, order, &span)
 		return &K{msgtype, NONE, span}, nil
-	case -KT:
-		var millis int32
-		binary.Read(r, order, &millis)
-		return Time(time.Unix(0, int64(millis)*int64(time.Millisecond))), nil
+	// case -KT:
+	// 	var millis int32
+	// 	binary.Read(r, order, &millis)
+	// 	return Time(time.Unix(0, int64(millis)*int64(time.Millisecond))), nil
 	case KB, UU, KG, KH, KI, KJ, KE, KF, KC, KP, KM, KD, KN, KU, KV, KT, KZ:
 		var vecattr Attr
 		if err := binary.Read(r, order, &vecattr); err != nil {
@@ -251,11 +251,12 @@ func readData(r *bufio.Reader, order binary.ByteOrder) (*K, error) {
 			}
 			return TimespanV(vec), nil
 		case KT:
-			var vec = make([]time.Time, veclen)
-			for i, millis := range arr.([]int32) {
-				vec[i] = time.Unix(0, int64(millis)*int64(time.Millisecond))
-			}
-			return TimeV(vec), nil
+			// var vec = make([]time.Time, veclen)
+			// for i, millis := range arr.([]int32) {
+			// 	vec[i] = time.Unix(0, int64(millis)*int64(time.Millisecond))
+			// }
+			// return TimeV(vec), nil
+			return TimeV(arr.([]int32)), nil
 		}
 		return &K{msgtype, vecattr, arr}, nil
 	case K0:

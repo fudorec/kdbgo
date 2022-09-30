@@ -260,18 +260,26 @@ func DateV(x []time.Time) *K {
 
 var K0Nd = Timestamp(time.Unix(0, Nj))
 
-func Time(x time.Time) *K {
-	return &K{Type: -KT, Attr: NONE, Data: x.UTC()}
+// func Time(x time.Time) *K {
+// 	return &K{Type: -KT, Attr: NONE, Data: x.UTC()}
+// }
+
+//	func TimeV(x []time.Time) *K {
+//		for i, t := range x {
+//			x[i] = t.UTC()
+//		}
+//		return &K{Type: KT, Attr: NONE, Data: x}
+//	}
+
+func Time(x int32) *K {
+	return &K{Type: -KT, Attr: NONE, Data: x}
 }
 
-func TimeV(x []time.Time) *K {
-	for i, t := range x {
-		x[i] = t.UTC()
-	}
+func TimeV(x []int32) *K {
 	return &K{Type: KT, Attr: NONE, Data: x}
 }
 
-var K0Nt = Time(time.Unix(0, Nj))
+var K0Nt = Time(Ni)
 
 func Timespan(x time.Duration) *K {
 	return &K{Type: -KN, Attr: NONE, Data: x}

@@ -31,8 +31,8 @@ func writeData(dbuf *bytes.Buffer, order binary.ByteOrder, data *K) error {
 				return err
 			}
 		}
-	case -KB, -UU, -KG, -KH, -KI, -KJ, -KE, -KF, -KC, -KM, -KZ, -KN, -KU, -KV,
-		KB, UU, KG, KH, KI, KJ, KE, KF, KM, KZ, KN, KU, KV: // Bool, Int, Float, and Byte
+	case -KB, -UU, -KG, -KH, -KI, -KJ, -KE, -KF, -KC, -KM, -KZ, -KN, -KU, -KV, -KT,
+		KB, UU, KG, KH, KI, KJ, KE, KF, KM, KZ, KN, KU, KV, KT: // Bool, Int, Float, and Byte
 		// Note: UUID is backed by byte array of length 16
 		if err := binary.Write(dbuf, order, data.Data); err != nil {
 			log.Println("Error writing", data.Data, err)
@@ -62,21 +62,21 @@ func writeData(dbuf *bytes.Buffer, order binary.ByteOrder, data *K) error {
 			days := (date.Truncate(time.Hour*24).Unix() - qEpoch.Unix()) / 86400
 			binary.Write(dbuf, order, int32(days))
 		}
-	case -KT: // Time
-		t := data.Data.(time.Time)
-		nanos := time.Duration(t.Hour())*time.Hour +
-			time.Duration(t.Minute())*time.Minute +
-			time.Duration(t.Second())*time.Second +
-			time.Duration(t.Nanosecond())
-		binary.Write(dbuf, order, int32(nanos/time.Millisecond))
-	case KT: // Time
-		for _, t := range data.Data.([]time.Time) {
-			nanos := time.Duration(t.Hour())*time.Hour +
-				time.Duration(t.Minute())*time.Minute +
-				time.Duration(t.Second())*time.Second +
-				time.Duration(t.Nanosecond())
-			binary.Write(dbuf, order, int32(nanos/time.Millisecond))
-		}
+	// case -KT: // Time
+	// 	t := data.Data.(time.Time)
+	// 	nanos := time.Duration(t.Hour())*time.Hour +
+	// 		time.Duration(t.Minute())*time.Minute +
+	// 		time.Duration(t.Second())*time.Second +
+	// 		time.Duration(t.Nanosecond())
+	// 	binary.Write(dbuf, order, int32(nanos/time.Millisecond))
+	// case KT: // Time
+	// 	for _, t := range data.Data.([]time.Time) {
+	// 		nanos := time.Duration(t.Hour())*time.Hour +
+	// 			time.Duration(t.Minute())*time.Minute +
+	// 			time.Duration(t.Second())*time.Second +
+	// 			time.Duration(t.Nanosecond())
+	// 		binary.Write(dbuf, order, int32(nanos/time.Millisecond))
+	// 	}
 	case XD: // Dictionary
 		dict := data.Data.(Dict)
 		err := writeData(dbuf, order, dict.Key)

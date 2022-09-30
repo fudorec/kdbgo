@@ -51,7 +51,9 @@ var encodingTests = []struct {
 	{"1#2013.06.10T22:03:49.713", &K{KZ, NONE, []float64{4909.9193253819449}}, DateTimeVecBytes},
 
 	{"1#2013.06.10", DateV([]time.Time{DateAsTime}), DateVecBytes},
-	{"1#21:53:37.963", TimeV([]time.Time{time.Date(1970, 1, 1, 21, 53, 37, 963000000, time.UTC)}), TimeVecBytes},
+	{"1#21:53:37.963", TimeV([]int32{78817963}), TimeVecBytes},
+	{"21:53:37.963", Time(int32(78817963)), TimeBytes},
+	// {"1#21:53:37.963", TimeV([]time.Time{time.Date(1970, 1, 1, 21, 53, 37, 963000000, time.UTC)}), TimeVecBytes},
 	{"21:22:01 + 1 2", &K{KV, NONE, []int32{76922, 76923}}, SecondVecBytes},
 	{"21:22*til 2", &K{KU, NONE, []int32{0, 1282}}, MinuteVecBytes},
 	{"2013.06m +til 3", &K{KM, NONE, []Month{161, 162, 163}}, MonthVecBytes},
