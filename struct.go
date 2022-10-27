@@ -231,8 +231,7 @@ func SymbolV(x []string) *K {
 	return &K{KS, NONE, x}
 }
 
-// TODO:
-// var K0Ns = Symbol("")
+var K0Ns = Symbol("")
 
 func Timestamp(x time.Time) *K {
 	return &K{Type: -KP, Attr: NONE, Data: x.UTC()}

@@ -32,7 +32,7 @@ var encodingTests = []struct {
 	{"1i", Int(1), IntBytes},
 	{"enlist 1i", IntV([]int32{1}), IntVectorBytes},
 	{"`byte$til 5", &K{KG, NONE, []byte{0, 1, 2, 3, 4}}, ByteVectorBytes},
-	{"\"GOOG\"", &K{KC, NONE, "GOOG"}, CharArrayBytes},
+	{"\"GOOG\"", String("GOOG"), CharArrayBytes},
 	{"`GOOG", Symbol("GOOG"), SymbolBytes},
 	{"`abc`bc`c", SymbolV([]string{"abc", "bc", "c"}), SymbolVectorBytes},
 	{"`a`b!2 3", NewDict(SymbolV([]string{"a", "b"}), IntV([]int32{2, 3})), DictWithAtomsBytes},
